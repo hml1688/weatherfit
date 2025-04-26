@@ -6,9 +6,24 @@ import 'package:provider/provider.dart';
 
 import 'app_state.dart';
 import 'src/widgets.dart';
+import 'weather_screen.dart';
+import 'history_screen.dart';
 
-class FirstScreen extends StatelessWidget {
+class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
+
+  @override
+  State<FirstScreen> createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends State<FirstScreen> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _screens = [
+    const HomeContent(),
+    const WeatherScreen(),
+    const HistoryScreen(),
+  ];
 
   Future<void> _showLogoutConfirmation(BuildContext context) async {
     return showDialog<void>(
@@ -51,9 +66,41 @@ class FirstScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Main Content Area'),
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.cloud),
+            label: 'Weather',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
+        ],
       ),
+    );
+  }
+}
+
+// 将原来的 FirstScreen 内容移到这个新组件中
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Main Content Area'),
     );
   }
 }
