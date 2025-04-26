@@ -56,6 +56,7 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, // 新增此行
         title: const Text('Weatherfit'),
         actions: [
           Consumer<ApplicationState>(
