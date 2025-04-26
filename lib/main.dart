@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'app_state.dart';  
 import 'home_page.dart';
+import 'firstscreen.dart';
 
 
 void main() {
@@ -57,7 +58,7 @@ final _router = GoRouter(
                             'Please check your email to verify your email address'));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
-                  context.pushReplacement('/');
+                  context.go('/first');
                 })),
               ],
             );
@@ -79,14 +80,16 @@ final _router = GoRouter(
           path: 'profile',
           builder: (context, state) {
             return ProfileScreen(
-              providers: const [],
+              providers: [EmailAuthProvider()], // 与登录页一致
               actions: [
-                SignedOutAction((context) {
-                  context.pushReplacement('/');
-                }),
+                SignedOutAction((context) => context.go('/')),  // 登出时返回首页
               ],
             );
           },
+        ),
+        GoRoute(
+          path: 'first',
+          builder: (context, state) => const FirstScreen(),
         ),
       ],
     ),
