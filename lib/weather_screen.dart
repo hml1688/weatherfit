@@ -82,22 +82,28 @@ class _WeatherScreenState extends State<WeatherScreen> {
         children: [
           _WeatherInfoCard(
             icon: Icons.location_city,
-            title: 'city',
+            title: 'City',
             value: _weatherData!['name'],
           ),
           _WeatherInfoCard(
             icon: Icons.thermostat,
-            title: 'temperature',
+            title: 'Temperature',
             value: '${_weatherData!['main']['temp']}°C',
           ),
           _WeatherInfoCard(
+            icon: Icons.thermostat_outlined,
+            title: 'Temperature Range',
+            value: '${_weatherData!['main']['temp_min']}°C ~ '
+                 '${_weatherData!['main']['temp_max']}°C',
+        ),
+          _WeatherInfoCard(
             icon: Icons.cloud,
-            title: 'weather',
+            title: 'Weather',
             value: _weatherData!['weather'][0]['description'],
           ),
           _WeatherInfoCard(
             icon: Icons.air,
-            title: 'wind speed',
+            title: 'Wind speed',
             value: '${_weatherData!['wind']['speed']} m/s',
           ),
         ],
