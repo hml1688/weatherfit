@@ -6,6 +6,10 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Myfirstapp</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Location permissions are needed to obtain the local weather</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>The background location permission needs to be continuously updated to update the weather</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
