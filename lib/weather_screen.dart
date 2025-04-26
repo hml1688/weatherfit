@@ -47,7 +47,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
   @override
   void initState() {
     super.initState();
-    _checkLocationPermission();
+    //_checkLocationPermission();
+    _fetchWeather(); // 保留数据加载逻辑
+
   }
 
   @override

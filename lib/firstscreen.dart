@@ -19,9 +19,12 @@ class FirstScreen extends StatefulWidget {
 class _FirstScreenState extends State<FirstScreen> {
   int _selectedIndex = 0;
 
+  // 使用 PageStorage 保存页面状态
+  final PageStorageBucket _bucket = PageStorageBucket();
+
   final List<Widget> _screens = [
     const HomeContent(),
-    const WeatherScreen(),
+    WeatherScreen(key: const PageStorageKey('weather')), // 添加唯一标识
     const HistoryScreen(),
   ];
 
@@ -67,7 +70,12 @@ class _FirstScreenState extends State<FirstScreen> {
           ),
         ],
       ),
-      body: _screens[_selectedIndex],
+      //body: _screens[_selectedIndex],
+      body: PageStorage( // 包裹页面
+        bucket: _bucket,
+        child: _screens[_selectedIndex],
+      ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
