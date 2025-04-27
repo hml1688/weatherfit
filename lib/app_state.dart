@@ -14,6 +14,10 @@ class ApplicationState extends ChangeNotifier {
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
 
+  String _temperatureRange = '等待更新...';
+
+  String get temperatureRange => _temperatureRange;
+
   Future<void> init() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
@@ -30,5 +34,10 @@ class ApplicationState extends ChangeNotifier {
       }
       notifyListeners();
     });
+  }
+
+  void updateTemperatureRange(String range) {
+    _temperatureRange = range;
+    notifyListeners();
   }
 }

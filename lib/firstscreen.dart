@@ -22,9 +22,16 @@ class _FirstScreenState extends State<FirstScreen> {
   // 使用 PageStorage 保存页面状态
   final PageStorageBucket _bucket = PageStorageBucket();
 
-  final List<Widget> _screens = [
+  void _updateTemperatureRange(String range) {
+    context.read<ApplicationState>().updateTemperatureRange(range);
+  }
+
+  late final List<Widget> _screens = [
     const HomeContent(),
-    WeatherScreen(key: const PageStorageKey('weather')), // 添加唯一标识
+    WeatherScreen(
+      key: const PageStorageKey('weather'),
+      onTemperatureRangeUpdate: _updateTemperatureRange,
+    ),
     const HistoryScreen(),
   ];
 
@@ -108,8 +115,20 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Main Content Area'),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Main Content Area'),
+          const SizedBox(height: 20),
+          Consumer<ApplicationState>(
+            builder: (context, appState, _) => Text(
+              '当前温度范围: ${appState.temperatureRange}',
+              style: const TextStyle(fontSize: 18),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

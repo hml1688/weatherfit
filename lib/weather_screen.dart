@@ -5,7 +5,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'services/weather_service.dart';
 
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({super.key});
+  final Function(String)? onTemperatureRangeUpdate;
+  const WeatherScreen({super.key, this.onTemperatureRangeUpdate});
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
@@ -37,6 +38,12 @@ class _WeatherScreenState extends State<WeatherScreen> {
     try {
       final data = await WeatherService.getWeatherByCity(_city);
       setState(() => _weatherData = data);
+      
+      // 当获取到天气数据后，通过回调函数传递温度范围
+      if (widget.onTemperatureRangeUpdate != null && _weatherData != null) {
+        final tempRange = '${_weatherData!['main']['temp_min']}°C ~ ${_weatherData!['main']['temp_max']}°C';
+        widget.onTemperatureRangeUpdate!(tempRange);
+      }
     } catch (e) {
       setState(() => _errorMessage = 'Failed to get weather: $e');
     } finally {
