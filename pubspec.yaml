@@ -60,6 +60,22 @@ flutter:
   assets:
     - assets/introductionfigure.jpg
     - assets/intro.png
+    - assets/clothes/short T.png
+    - assets/clothes/T-shirt.jpg
+    - assets/clothes/sweater.jpg
+    - assets/clothes/knitwear.jpg
+    - assets/clothes/hoodies.jpg
+    - assets/clothes/wool sweater.jpg
+    - assets/clothes/suit jacket.jpg
+    - assets/clothes/jean jacket.png
+    - assets/clothes/light down jacket.png
+    - assets/clothes/down jacket.jpg
+    - assets/clothes/jeans.jpg
+    - assets/clothes/trousers.jpg
+    - assets/clothes/cotton-wadded trousers.jpg
+    - assets/clothes/fleece pants.jpg
+    - assets/clothes/down pants.png
+    - assets/clothes/shorts.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

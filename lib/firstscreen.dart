@@ -121,48 +121,129 @@ class HomeContent extends StatelessWidget {
     
     // 从temperatureRange中提取温度范围
     final tempRange = appState.temperatureRange;
-    final tempValues = tempRange.split('°C ~ ');
-    final dayMin = double.tryParse(tempValues[0]) ?? 0.0;
-    final dayMax = double.tryParse(tempValues[1].replaceAll('°C', '')) ?? 0.0;
+    double dayMin = 0.0;
+    double dayMax = 0.0;
+    
+    try {
+      if (tempRange.contains('°C ~ ')) {
+        final tempValues = tempRange.split('°C ~ ');
+        dayMin = double.tryParse(tempValues[0]) ?? 0.0;
+        dayMax = double.tryParse(tempValues[1].replaceAll('°C', '')) ?? 0.0;
+      }
+    } catch (e) {
+      print('Error parsing temperature range: $e');
+    }
 
     final outfit = recommender.recommend(dayMin, dayMax);
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildRecommendationCard("👕 今日上衣推荐", outfit['top']!),
-          const SizedBox(height: 20),
-          _buildRecommendationCard("👖 今日下装推荐", outfit['bottom']!),
+          Text(
+            "Today's recommendation:",
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w800,
+              color: Colors.deepPurple[800],
+              fontFamily: 'PlaywriteAUSA',
+            ),
+          ),
           const SizedBox(height: 20),
           Text(
-            '今日温度范围: $tempRange',
-            style: const TextStyle(fontSize: 18),
+            'Temperature range: $tempRange',
+            style: const TextStyle(fontSize: 20),
+          ),
+          const SizedBox(height: 20),
+          _buildRecommendationCard(
+            "👕 Top",
+            outfit['top']!,
+            _getClothingImage(outfit['top']!),
+          ),
+          const SizedBox(height: 20),
+          _buildRecommendationCard(
+            "👖 Bottoms",
+            outfit['bottom']!,
+            _getClothingImage(outfit['bottom']!),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRecommendationCard(String title, String recommendation) {
+  Widget _buildRecommendationCard(String title, String recommendation, String imagePath) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontSize: 18)),
+            Text(title, style: const TextStyle(fontSize: 20)),
             const Divider(),
-            Text(
-              recommendation,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.blue,
-                fontWeight: FontWeight.bold
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Center(
+                      child: Text(
+                        recommendation,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.asset(
+                      imagePath,
+                      height: 150,
+                      width: double.infinity,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.error, size: 50);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _getClothingImage(String clothingName) {
+    // 根据服装名称返回对应的图片路径
+    final Map<String, String> imageMap = {
+      'short T-shirt': 'assets/clothes/short T.png',
+      'T-shirt': 'assets/clothes/T-shirt.jpg',
+      'sweater': 'assets/clothes/sweater.jpg',
+      'knitwear': 'assets/clothes/knitwear.jpg',
+      'hoodies': 'assets/clothes/hoodies.jpg',
+      'wool sweater': 'assets/clothes/wool sweater.jpg',
+      'suit jacket': 'assets/clothes/suit jacket.jpg',
+      'jean jacket': 'assets/clothes/jean jacket.png',
+      'light down jacket': 'assets/clothes/light down jacket.png',
+      'down jacket': 'assets/clothes/down jacket.jpg',
+      'jeans': 'assets/clothes/jeans.jpg',
+      'trousers': 'assets/clothes/trousers.jpg',
+      'cotton-wadded trousers': 'assets/clothes/cotton-wadded trousers.jpg',
+      'fleece pants': 'assets/clothes/fleece pants.jpg',
+      'down pants': 'assets/clothes/down pants.png',
+      'shorts': 'assets/clothes/shorts.png',
+    };
+
+    return imageMap[clothingName] ?? 'assets/clothes/T-shirt.jpg'; // 默认图片
   }
 }

@@ -6,7 +6,7 @@ class ClothingRecommender {
   final Random _random = Random();
 
   Map<String, String> recommend(double dayMin, double dayMax) {
-    // 极端温度处理
+    // Handling of extreme temperature conditions
     if (dayMax > 30) {
       return _summerOutfit();
     }
@@ -14,7 +14,7 @@ class ClothingRecommender {
       return _winterOutfit();
     }
 
-    // 正常推荐逻辑
+    // Normal recommendation logic
     return {
       'top': _pickClothing(dayMin, dayMax, isTop: true),
       'bottom': _pickClothing(dayMin, dayMax, isTop: false),
@@ -27,25 +27,25 @@ class ClothingRecommender {
     }).toList();
 
     if (candidates.isEmpty) {
-      return isTop ? "无合适上衣" : "无合适下装";
+      return isTop ? "No suitable top" : "No suitable bottom";
     }
 
     return candidates[_random.nextInt(candidates.length)].name;
   }
 
-  // 夏季固定搭配
+  // Summer fixed matching
   Map<String, String> _summerOutfit() {
     return {
-      'top': "短袖T恤",
-      'bottom': "短裤/裙",
+      'top': "short T-shirt",
+      'bottom': "shorts",
     };
   }
 
-  // 冬季固定搭配
+  // Winter fixed matching
   Map<String, String> _winterOutfit() {
     return {
-      'top': "厚羽绒服",
-      'bottom': "羽绒裤",
+      'top': "down jacket",
+      'bottom': "down pants",
     };
   }
 }

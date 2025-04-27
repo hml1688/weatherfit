@@ -13,6 +13,10 @@ class Clothing {
 
   // 区间重叠检测方法
   bool matchesRange(double dayMin, double dayMax) {
-    return dayMax >= minTemp && dayMin <= maxTemp;
-  }
+  // 自动处理温度顺序
+  final lowerDay = dayMin < dayMax ? dayMin : dayMax;
+  final upperDay = dayMin > dayMax ? dayMin : dayMax;
+
+  return (lowerDay <= maxTemp) && (minTemp <= upperDay);
+}
 }
