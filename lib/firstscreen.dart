@@ -28,12 +28,12 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
   late final List<Widget> _screens = [
-    const HomeContent(),
     WeatherScreen(
       key: const PageStorageKey('weather'),
       onTemperatureRangeUpdate: _updateTemperatureRange,
     ),
-    const HistoryScreen(),
+    const HomeContent(key: PageStorageKey('home')), // 添加唯一key
+  const HistoryScreen(key: PageStorageKey('history')), // 添加唯一key
   ];
 
   Future<void> _showLogoutConfirmation(BuildContext context) async {
@@ -92,19 +92,19 @@ class _FirstScreenState extends State<FirstScreen> {
           });
         },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud),
-            label: 'Weather',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
-          ),
-        ],
+    BottomNavigationBarItem( // 第一项：Weather
+      icon: Icon(Icons.cloud),
+      label: 'Weather',
+    ),
+    BottomNavigationBarItem( // 第二项：Home
+      icon: Icon(Icons.home),
+      label: 'Home',
+    ),
+    BottomNavigationBarItem( // 第三项：History
+      icon: Icon(Icons.history),
+      label: 'History',
+    ),
+  ],
       ),
     );
   }
