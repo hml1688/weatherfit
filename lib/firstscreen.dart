@@ -8,6 +8,7 @@ import 'app_state.dart';
 import 'src/widgets.dart';
 import 'weather_screen.dart';
 import 'history_screen.dart';
+import '../services/recommender.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -109,25 +110,58 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 }
 
-// 将原来的 FirstScreen 内容移到这个新组件中
+// 在firstscreen.dart的HomeContent组件中
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    final appState = context.watch<ApplicationState>();
+    final recommender = ClothingRecommender();
+    
+    // 从temperatureRange中提取温度范围
+    final tempRange = appState.temperatureRange;
+    final tempValues = tempRange.split('°C ~ ');
+    final dayMin = double.tryParse(tempValues[0]) ?? 0.0;
+    final dayMax = double.tryParse(tempValues[1].replaceAll('°C', '')) ?? 0.0;
+
+    final outfit = recommender.recommend(dayMin, dayMax);
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Main Content Area'),
+          _buildRecommendationCard("👕 今日上衣推荐", outfit['top']!),
           const SizedBox(height: 20),
-          Consumer<ApplicationState>(
-            builder: (context, appState, _) => Text(
-              '当前温度范围: ${appState.temperatureRange}',
-              style: const TextStyle(fontSize: 18),
-            ),
+          _buildRecommendationCard("👖 今日下装推荐", outfit['bottom']!),
+          const SizedBox(height: 20),
+          Text(
+            '今日温度范围: $tempRange',
+            style: const TextStyle(fontSize: 18),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildRecommendationCard(String title, String recommendation) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text(title, style: const TextStyle(fontSize: 18)),
+            const Divider(),
+            Text(
+              recommendation,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.blue,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
