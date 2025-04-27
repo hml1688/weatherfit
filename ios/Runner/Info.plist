@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Myfirstapp</string>
+	<string>Weatherfit</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Location permissions are needed to obtain the local weather</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -17,7 +17,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>myfirstapp</string>
+	<string>Weatherfit</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
