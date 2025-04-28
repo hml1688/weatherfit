@@ -238,6 +238,27 @@ class HomeContent extends StatelessWidget {
             firstScreenState._currentOutfit['bottom'] ?? 'No recommendation',
             _getClothingImage(firstScreenState._currentOutfit['bottom'] ?? 'jeans'),
           ),
+          const SizedBox(height: 20),
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () {
+                appState.addFavoriteOutfit(firstScreenState._currentOutfit);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("✨ Outfit added to favorites!"),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.favorite_border),
+              label: const Text('Add to Favorites'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple[100],
+                foregroundColor: Colors.deepPurple[900],
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
+            ),
+          ),
         ],
       ),
     );
