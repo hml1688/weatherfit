@@ -225,6 +225,7 @@ class HomeContent extends StatelessWidget {
                 fontFamily: 'PlaywriteAUSA',
               ),
             ),
+
             const SizedBox(height: 20),
             Text(
               'Temperature range: ${appState.temperatureRange}',
@@ -248,6 +249,7 @@ class HomeContent extends StatelessWidget {
             
           ],
         ),
+
       ),
     );
   }

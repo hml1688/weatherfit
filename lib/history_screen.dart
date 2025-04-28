@@ -8,6 +8,7 @@ import 'src/authentication.dart';
 import 'src/widgets.dart';
 import 'guest_book.dart';
 
+
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
@@ -24,6 +25,7 @@ class HistoryScreen extends StatelessWidget {
               messages: appState.guestBookMessages, // new
             ),
           ],
+
         ],
       ),
     );

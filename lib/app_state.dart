@@ -9,6 +9,12 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'guest_book_message.dart';   
 
+// 添加登录状态枚举
+enum ApplicationLoginState {
+  loggedOut,
+  loggedIn,
+}
+
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
     init();
@@ -16,14 +22,11 @@ class ApplicationState extends ChangeNotifier {
 
   Future<void> init() async {
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
-
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
+
         _loggedIn = true;
         _guestBookSubscription = FirebaseFirestore.instance
             .collection('guestbook')
@@ -45,10 +48,12 @@ class ApplicationState extends ChangeNotifier {
         _loggedIn = false;
         _guestBookMessages = [];
         _guestBookSubscription?.cancel();
+
       }
       notifyListeners();
     });
   }
+
 
   bool _loggedIn = false;
   bool get loggedIn => _loggedIn;
@@ -76,6 +81,7 @@ class ApplicationState extends ChangeNotifier {
   }
 
    String get temperatureRange => _temperatureRange;
+
 
   void updateTemperatureRange(String range) {
     _temperatureRange = range;
