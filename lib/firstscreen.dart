@@ -51,7 +51,7 @@ class _FirstScreenState extends State<FirstScreen> {
 
   void _startAccelerometer() {
     _accelerometerSubscription = accelerometerEvents.listen((event) {
-      if (_selectedIndex != 1) return; // 只在Home页检测
+      if (_selectedIndex != 1) return; // Only detect on the Home page
 
       final acceleration = Vector3(event.x, event.y, event.z).length;
       final now = DateTime.now();
@@ -67,10 +67,10 @@ class _FirstScreenState extends State<FirstScreen> {
   }
 
   void _handleShake() {
-    // 强制刷新整个页面
+    // Force refresh the entire page
     setState(() {
-      _selectedIndex = 1; // 确保在 Home 页面
-      _updateRecommendation(); // 更新推荐
+      _selectedIndex = 1; // Make sure it is on the Home page
+      _updateRecommendation(); // Update recommendation
     });
 
     HapticFeedback.mediumImpact();
@@ -212,7 +212,6 @@ class HomeContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
-        // 添加滚动支持
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -245,11 +244,36 @@ class HomeContent extends StatelessWidget {
               _getClothingImage(
                   firstScreenState._currentOutfit['bottom'] ?? 'jeans'),
             ),
-            
-            
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  final outfit = '${firstScreenState._currentOutfit['top']} + ${firstScreenState._currentOutfit['bottom']}';
+                  appState.addToFavorites(outfit).then((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Added to favorites!'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }).catchError((error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('fail to add: $error'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  });
+                },
+                icon: const Icon(Icons.favorite),
+                label: const Text('Collect the current combination'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                ),
+              ),
+            ),
           ],
         ),
-
       ),
     );
   }
@@ -306,7 +330,7 @@ class HomeContent extends StatelessWidget {
   }
 
   String _getClothingImage(String clothingName) {
-    // 根据服装名称返回对应的图片路径
+    // Return the corresponding picture path based on the name of the clothing
     final Map<String, String> imageMap = {
       'short T-shirt': 'assets/clothes/short T.png',
       'T-shirt': 'assets/clothes/T-shirt.jpg',

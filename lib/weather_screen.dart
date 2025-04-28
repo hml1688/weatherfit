@@ -19,7 +19,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String _errorMessage = '';
   final Location _location = Location();
 
-  // 获取定位权限
+  // Get location permission
   Future<void> _checkLocationPermission() async {
     final status = await Permission.location.request();
     if (!status.isGranted) {
@@ -28,7 +28,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }
   }
 
-  // 获取天气数据
+  // Obtain weather data
   Future<void> _fetchWeather() async {
     setState(() {
       _isLoading = true;
@@ -39,7 +39,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       final data = await WeatherService.getWeatherByCity(_city);
       setState(() => _weatherData = data);
       
-      // 当获取到天气数据后，通过回调函数传递温度范围
+      // When the weather data is obtained, the temperature range is passed through the callback function
       if (widget.onTemperatureRangeUpdate != null && _weatherData != null) {
         final tempRange = '${_weatherData!['main']['temp_min']}°C ~ ${_weatherData!['main']['temp_max']}°C';
         widget.onTemperatureRangeUpdate!(tempRange);
@@ -55,7 +55,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   void initState() {
     super.initState();
     //_checkLocationPermission();
-    _fetchWeather(); // 保留数据加载逻辑
+    _fetchWeather(); // Retain the data loading logic
 
   }
 

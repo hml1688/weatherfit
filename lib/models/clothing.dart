@@ -11,9 +11,9 @@ class Clothing {
     required this.isTop,
   });
 
-  // 区间重叠检测方法
+  // Interval overlap detection method
   bool matchesRange(double dayMin, double dayMax) {
-  // 自动处理温度顺序
+  // Automatically handle the temperature sequence
   final lowerDay = dayMin < dayMax ? dayMin : dayMax;
   final upperDay = dayMin > dayMax ? dayMin : dayMax;
 

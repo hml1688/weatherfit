@@ -61,7 +61,7 @@ final _router = GoRouter(
                   context.go('/first');
                 })),
               ],
-              providers: [EmailAuthProvider()], // 添加这行代码
+              providers: [EmailAuthProvider()], 
             );
           },
           routes: [
@@ -81,9 +81,9 @@ final _router = GoRouter(
           path: 'profile',
           builder: (context, state) {
             return ProfileScreen(
-              providers: [EmailAuthProvider()], // 与登录页一致
+              providers: [EmailAuthProvider()], // Consistent with the login page
               actions: [
-                SignedOutAction((context) => context.go('/')),  // 登出时返回首页
+                SignedOutAction((context) => context.go('/')),  // Return to the homepage when logging out
               ],
             );
           },

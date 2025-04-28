@@ -14,7 +14,7 @@ Widget build(BuildContext context) => Padding(
       fontSize: 32,
       fontWeight: FontWeight.w600,
       color: Colors.deepPurple[800],
-      fontFamily: 'PlaywriteAUSA', // 使用Google Fonts中的字体
+      fontFamily: 'PlaywriteAUSA', // Use the Fonts in Google Fonts
     ),
     textAlign: TextAlign.center,
   ),

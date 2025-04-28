@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ApplicationState>(
       builder: (context, appState, _) {
-        // 添加自动跳转逻辑
+        // Add automatic jump logic
         if (appState.loggedIn) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             context.go('/first');
@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              if (!appState.loggedIn) // 仅未登录时显示
+              if (!appState.loggedIn) // It is displayed only when not logged in
                 AuthFunc(
                   loggedIn: appState.loggedIn,
                   signOut: () => FirebaseAuth.instance.signOut(),
