@@ -13,6 +13,7 @@ import 'app_state.dart';
 import 'src/widgets.dart';
 import 'weather_screen.dart';
 import 'history_screen.dart';
+import 'guest_book.dart';
 import 'services/recommender.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -54,9 +55,9 @@ class _FirstScreenState extends State<FirstScreen> {
 
       final acceleration = Vector3(event.x, event.y, event.z).length;
       final now = DateTime.now();
-      
+
       if (acceleration > _shakeThreshold) {
-        if (_lastShakeTime == null || 
+        if (_lastShakeTime == null ||
             now.difference(_lastShakeTime!).inMilliseconds > 1000) {
           _lastShakeTime = now;
           _handleShake();
@@ -71,25 +72,24 @@ class _FirstScreenState extends State<FirstScreen> {
       _selectedIndex = 1; // 确保在 Home 页面
       _updateRecommendation(); // 更新推荐
     });
-    
+
     HapticFeedback.mediumImpact();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("✨ The new combination has been refreshed!"),
-        duration: Duration(seconds: 1),
-      )
-    );
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("✨ The new combination has been refreshed!"),
+      duration: Duration(seconds: 1),
+    ));
   }
 
   void _updateRecommendation() {
     final appState = context.read<ApplicationState>();
     final tempRange = appState.temperatureRange;
-    
+
     try {
       if (tempRange.contains('°C ~ ')) {
         final tempValues = tempRange.split('°C ~ ');
         final dayMin = double.tryParse(tempValues[0]) ?? 0.0;
-        final dayMax = double.tryParse(tempValues[1].replaceAll('°C', '')) ?? 0.0;
+        final dayMax =
+            double.tryParse(tempValues[1].replaceAll('°C', '')) ?? 0.0;
 
         setState(() {
           if (dayMax > 30) {
@@ -178,7 +178,8 @@ class _FirstScreenState extends State<FirstScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Reminder'),
-          content: const Text('Are you sure you want to log out of the current account?'),
+          content: const Text(
+              'Are you sure you want to log out of the current account?'),
           actions: <Widget>[
             TextButton(
               child: const Text('Cancel'),
@@ -204,46 +205,55 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final firstScreenState = context.findAncestorStateOfType<_FirstScreenState>()!;
+    final firstScreenState =
+        context.findAncestorStateOfType<_FirstScreenState>()!;
     final appState = context.watch<ApplicationState>();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Today's recommendation:",
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w800,
-              color: Colors.deepPurple[800],
-              fontFamily: 'PlaywriteAUSA',
+      child: SingleChildScrollView(
+        // 添加滚动支持
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Today's recommendation:",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w800,
+                color: Colors.deepPurple[800],
+                fontFamily: 'PlaywriteAUSA',
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Temperature range: ${appState.temperatureRange}',
-            style: const TextStyle(fontSize: 20),
-          ),
-          const SizedBox(height: 20),
-          _buildRecommendationCard(
-            "👕 Top",
-            firstScreenState._currentOutfit['top'] ?? 'No recommendation',
-            _getClothingImage(firstScreenState._currentOutfit['top'] ?? 'T-shirt'),
-          ),
-          const SizedBox(height: 20),
-          _buildRecommendationCard(
-            "👖 Bottoms",
-            firstScreenState._currentOutfit['bottom'] ?? 'No recommendation',
-            _getClothingImage(firstScreenState._currentOutfit['bottom'] ?? 'jeans'),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Text(
+              'Temperature range: ${appState.temperatureRange}',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 20),
+            _buildRecommendationCard(
+              "👕 Top",
+              firstScreenState._currentOutfit['top'] ?? 'No recommendation',
+              _getClothingImage(
+                  firstScreenState._currentOutfit['top'] ?? 'T-shirt'),
+            ),
+            const SizedBox(height: 20),
+            _buildRecommendationCard(
+              "👖 Bottoms",
+              firstScreenState._currentOutfit['bottom'] ?? 'No recommendation',
+              _getClothingImage(
+                  firstScreenState._currentOutfit['bottom'] ?? 'jeans'),
+            ),
+            
+            
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildRecommendationCard(String title, String recommendation, String imagePath) {
+  Widget _buildRecommendationCard(
+      String title, String recommendation, String imagePath) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -263,10 +273,9 @@ class HomeContent extends StatelessWidget {
                       child: Text(
                         recommendation,
                         style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontSize: 20,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -315,6 +324,7 @@ class HomeContent extends StatelessWidget {
       'shorts': 'assets/clothes/shorts.png',
     };
 
-    return imageMap[clothingName] ?? 'assets/clothes/T-shirt.jpg'; // default image
+    return imageMap[clothingName] ??
+        'assets/clothes/T-shirt.jpg'; // default image
   }
 }
