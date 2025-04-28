@@ -33,6 +33,7 @@ dependencies:
   http: ^1.2.0      # 用于API调用
   location: ^5.0.3  # 获取设备定位
   permission_handler: ^11.3.0 # 处理权限
+  sensors_plus: ^4.0.0 # 添加传感器支持
 
 dev_dependencies:
   flutter_test:
@@ -104,7 +105,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-  
+
 flutter_icons:
   android: true
   ios: true
