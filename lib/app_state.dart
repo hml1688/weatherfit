@@ -11,7 +11,10 @@ import 'guest_book_message.dart';
 
 class ApplicationState extends ChangeNotifier {
   ApplicationState() {
-    Future<void> init() async {
+    init();
+  }
+
+  Future<void> init() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
@@ -22,12 +25,29 @@ class ApplicationState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
         _loggedIn = true;
+        _guestBookSubscription = FirebaseFirestore.instance
+            .collection('guestbook')
+            .orderBy('timestamp', descending: true)
+            .snapshots()
+            .listen((snapshot) {
+          _guestBookMessages = [];
+          for (final doc in snapshot.docs) {
+            _guestBookMessages.add(
+              GuestBookMessage(
+                name: doc.data()['name'] as String,
+                message: doc.data()['text'] as String,
+              ),
+            );
+          }
+          notifyListeners();
+        });
       } else {
         _loggedIn = false;
+        _guestBookMessages = [];
+        _guestBookSubscription?.cancel();
       }
       notifyListeners();
     });
-  }
   }
 
   bool _loggedIn = false;
