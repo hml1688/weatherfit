@@ -62,7 +62,7 @@ class ApplicationState extends ChangeNotifier {
   List<GuestBookMessage> _guestBookMessages = [];
   List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
-  String _temperatureRange = '等待更新...';
+  String _temperatureRange = 'Waiting for the update...';
 
 
   Future<DocumentReference> addMessageToGuestBook(String message) {
