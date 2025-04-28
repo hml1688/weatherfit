@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';    
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
+import 'guest_book_message.dart';   
 
 // 添加登录状态枚举
 enum ApplicationLoginState {
@@ -23,44 +26,62 @@ class ApplicationState extends ChangeNotifier {
     );
     FirebaseAuth.instance.userChanges().listen((user) {
       if (user != null) {
-        _loginState = ApplicationLoginState.loggedIn;
-        _user = user;
-        _temperatureRange = '0°C ~ 0°C';
+
+        _loggedIn = true;
+        _guestBookSubscription = FirebaseFirestore.instance
+            .collection('guestbook')
+            .orderBy('timestamp', descending: true)
+            .snapshots()
+            .listen((snapshot) {
+          _guestBookMessages = [];
+          for (final doc in snapshot.docs) {
+            _guestBookMessages.add(
+              GuestBookMessage(
+                name: doc.data()['name'] as String,
+                message: doc.data()['text'] as String,
+              ),
+            );
+          }
+          notifyListeners();
+        });
       } else {
-        _loginState = ApplicationLoginState.loggedOut;
-        _user = null;
+        _loggedIn = false;
+        _guestBookMessages = [];
+        _guestBookSubscription?.cancel();
+
       }
       notifyListeners();
     });
   }
 
-  ApplicationLoginState _loginState = ApplicationLoginState.loggedOut;
-  ApplicationLoginState get loginState => _loginState;
-  bool get loggedIn => _loginState == ApplicationLoginState.loggedIn;
 
-  User? _user;
-  User? get user => _user;
+  bool _loggedIn = false;
+  bool get loggedIn => _loggedIn;
 
-  String _temperatureRange = '0°C ~ 0°C';
-  String get temperatureRange => _temperatureRange;
+  StreamSubscription<QuerySnapshot>? _guestBookSubscription;
+  List<GuestBookMessage> _guestBookMessages = [];
+  List<GuestBookMessage> get guestBookMessages => _guestBookMessages;
 
-  // 添加收藏列表
-  final List<Map<String, String>> _favoriteOutfits = [];
-  List<Map<String, String>> get favoriteOutfits => _favoriteOutfits;
+  String _temperatureRange = '等待更新...';
 
-  // 添加收藏方法
-  void addFavoriteOutfit(Map<String, String> outfit) {
-    _favoriteOutfits.add(outfit);
-    notifyListeners();
-  }
 
-  // 移除收藏方法
-  void removeFavoriteOutfit(int index) {
-    if (index >= 0 && index < _favoriteOutfits.length) {
-      _favoriteOutfits.removeAt(index);
-      notifyListeners();
+  Future<DocumentReference> addMessageToGuestBook(String message) {
+    if (!_loggedIn) {
+      throw Exception('Must be logged in');
     }
+
+    return FirebaseFirestore.instance
+        .collection('guestbook')
+        .add(<String, dynamic>{
+      'text': message,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+      'name': FirebaseAuth.instance.currentUser!.displayName,
+      'userId': FirebaseAuth.instance.currentUser!.uid,
+    });
   }
+
+   String get temperatureRange => _temperatureRange;
+
 
   void updateTemperatureRange(String range) {
     _temperatureRange = range;

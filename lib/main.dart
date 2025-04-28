@@ -61,6 +61,7 @@ final _router = GoRouter(
                   context.go('/first');
                 })),
               ],
+              providers: [EmailAuthProvider()], // 添加这行代码
             );
           },
           routes: [

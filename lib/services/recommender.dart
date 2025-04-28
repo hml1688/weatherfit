@@ -1,5 +1,4 @@
 import 'dart:math';
-import '../models/clothing.dart';
 import '../data/wardrobe.dart';
 
 class ClothingRecommender {

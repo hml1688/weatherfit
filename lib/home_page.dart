@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import 'app_state.dart';
+
 import 'src/authentication.dart';
 import 'src/widgets.dart';
 
@@ -55,6 +56,7 @@ class HomePage extends StatelessWidget {
                   signOut: () => FirebaseAuth.instance.signOut(),
                 ),
               const Spacer(),
+              
             ],
           ),
         );
