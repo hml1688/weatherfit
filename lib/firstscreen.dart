@@ -163,8 +163,8 @@ class _FirstScreenState extends State<FirstScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
           ),
         ],
       ),
