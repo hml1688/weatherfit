@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherFit - Dress Smart Every Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4ca1af;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #f8f9fa;
+            --text-color: #2c3e50;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #2c3e50);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>') repeat;
+            opacity: 0.1;
+        }
+
+        header h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        header p {
+            font-size: 1.4em;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: var(--secondary-color);
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px 40px;
+            margin-top: 80px;
+            padding: 0 60px;
+        }
+
+        .feature {
+            background: transparent;
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature img {
+            width: 500px;
+            height: 500px;
+            object-fit: contain;
+            margin-bottom: 40px;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+        }
+
+        .feature:hover img {
+            transform: scale(1.05);
+        }
+
+        .feature h3 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 1.5em;
+            line-height: 1.8;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:active {
+            transform: scale(0.95);
+        }
+
+        .cta-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .cta-button:active::after {
+            animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .features {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+            
+            .feature img {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                padding: 0 20px;
+            }
+            
+            .feature img {
+                width: 300px;
+                height: 300px;
+            }
+
+            .feature h3 {
+                font-size: 2em;
+            }
+
+            .feature p {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>WeatherFit</h1>
+    <p>Smart Outfit Recommendations Based on Real-Time Weather</p>
+    <a href="https://github.com/hml1688/weatherfit" class="cta-button" target="_blank">Get Started</a>
+</header>
+
+<section>
+    <h2>Why WeatherFit?</h2>
+    <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.2em;">
+        Choosing what to wear based only on a weather forecast can often lead to discomfort — it's hard to judge if an outfit will feel right throughout the day. WeatherFit solves this by analyzing the full-day temperature range and recommending clothing options that keep you comfortable and stylish.
+    </p>
+</section>
+
+<section>
+    <h2>App Features</h2>
+    <div class="features">
+        <div class="feature">
+            <img src="src/weather.png" alt="Real-Time Weather Detection">
+            <h3>Real-Time Weather Detection</h3>
+            <p>WeatherFit locates your position and gathers precise temperature, wind, and weather information to personalize your outfit recommendations.</p>
+        </div>
+        <div class="feature">
+            <img src="src/home.png" alt="Smart Outfit Suggestions">
+            <h3>Smart Outfit Suggestions</h3>
+            <p>Based on a clothing library tagged with ideal temperature ranges, WeatherFit recommends diverse and appropriate outfit combinations.</p>
+        </div>
+        <div class="feature">
+            <img src="src/gyroscope.png" alt="Shake to Refresh">
+            <h3>Interactive Shake-to-Refresh</h3>
+            <p>Want a new look? Simply shake your phone to refresh the outfit recommendation and discover more styles!</p>
+        </div>
+        <div class="feature">
+            <img src="src/add favorite.png" alt="Add your favorite">
+            <h3>Add your favorite</h3>
+            <p>Users can collect their favorite daily combinations</p>
+        </div>
+        <div class="feature">
+            <img src="src/favorite.png" alt="Community Inspiration">
+            <h3>Outfit Collection & Community</h3>
+            <p>Save your favorite outfits matched to different weather conditions and explore outfit ideas shared by others in the WeatherFit community.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 WeatherFit. Dress Smart, Feel Great.</p>
+    <div style="margin-top: 20px;">
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-facebook"></i></a>
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+        <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctaButton = document.querySelector('.cta-button');
+        
+        ctaButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const url = this.getAttribute('href');
+            
+            // 添加点击动画
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+                window.open(url, '_blank');
+            }, 200);
+        });
+    });
+</script>
+
+</body>
+</html>
